@@ -2,9 +2,10 @@ const mongoose = require('../database');
 
 const bcryptjs = require('bcryptjs');
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+    {
     name: {
-        type: String,
+        type: mongoose.Schema.Types.String,
         require: true,
     },
     email: {
@@ -12,18 +13,18 @@ const userSchema = new mongoose.Schema({
         require: true,
         unique: true,
         lowercase: true,
+        index: true
     },
     password: {
         type: String,
-        require: true,
-        select: false
+        require: true
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
-
-});
+},
+{
+    timestamps: true,
+    versionKey: false
+}
+);
 userSchema.pre('save', async function(next){
     const hash = await bcryptjs.hash(this.password, 10)
     console.log(this);
