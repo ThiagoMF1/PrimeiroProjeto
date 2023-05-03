@@ -13,5 +13,5 @@ app.use('/users', usersRouter);
 
 
 app.listen(3001,()=> {
-    console.log('El servidor está funcionando');
+    console.log('O servidor está funcionando');
 })
