@@ -1,3 +1,4 @@
+const { boolean } = require('webidl-conversions');
 const mongoose = require('../database');
 
 const bcryptjs = require('bcryptjs');
@@ -19,6 +20,11 @@ const userSchema = new mongoose.Schema(
         type: String,
         require: true
     },
+    archived:{
+        type:Boolean,
+        default: false
+    },
+
 },
 {
     timestamps: true,

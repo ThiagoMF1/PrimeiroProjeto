@@ -22,6 +22,27 @@ router.get('/users', async (req, res) => {
       return res.json(listadeUsuarios);
     }
   });
+  router.delete('/users/:id', async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const deletedUser = await User.findByIdAndDelete(userId);
 
+      if (!deletedUser) {
+        return res.status(404).json({
+          error: true,
+          message: 'Usuário não encontrado',
+        });
+      }
+
+      return res.json({
+        message: 'Usuário excluído com sucesso', //não necessario, apenas demonstração
+      });
+    } catch (error) {
+      return res.status(500).json({
+        error: true,
+        message: 'Erro ao excluir usuário',
+      });
+    }
+  });
 
 module.exports = router;
