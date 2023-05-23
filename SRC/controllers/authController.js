@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authConfig = require('../config/auth.json')
-
+const validator = require('validator');
 const userModel = require('../models/user');
 
 const router = express.Router();
@@ -22,6 +22,13 @@ router.post('/register', async(req, res) => {
     const {email} = req.body;
 
     const scUser = await userModel.countDocuments({email})
+
+    if (!validator.isEmail(email)) {
+        return res.status(400).json({
+          error: true,
+          message: 'Invalid email'
+        });
+      }
 
     if(scUser != 0){
         return res.status(400).json({
