@@ -26,7 +26,7 @@ router.post('/register', async(req, res) => {
     if(scUser != 0){
         return res.status(400).json({
             error: true,
-            message:'el usuario ya tiene registro'
+            message:'The user already has a registration'
         })
     }
 
@@ -49,7 +49,7 @@ router.post('/login', async(req, res) => {
     if(!user) {
         return res.status(400).json({
             error: true,
-            message:'usuario no encontrado'
+            message:'Invalid username or password'
         })
     }
 
@@ -58,7 +58,7 @@ router.post('/login', async(req, res) => {
     if(!comparePass){
         return res.status(400).send({
             error:true,
-            message:'contraseña invalida'
+            message:'Invalid username or password'
         })
     }    
 

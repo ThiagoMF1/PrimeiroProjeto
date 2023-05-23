@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
     if(!authHeader) {
         return res.status(401).json ({
             error: true,
-            message: 'token no proporcionada'
+            message: 'Token not provided'
         })
     }
 
@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
     if(parts.length !== 2) {
         return res.status(401).json({
             error: true,
-            message: 'tipo de token no válido'
+            message: 'Invalid token type'
         })
     }
     const [scheme, token] = parts;
@@ -23,7 +23,7 @@ module.exports = (req, res, next) => {
     if(scheme.indexOf('Bearer') !== 0) {
         return res.status(401).json({
             error: true,
-            message: 'Token mal formateado'
+            message: 'Malformed token'
         })
     }
 
@@ -35,7 +35,7 @@ module.exports = (req, res, next) => {
         if(err){
             return res.status(401).json({
                 error: true,
-                message: 'token inválido/caducado'
+                message: 'Invalid/Expired token'
             })
         }
        
