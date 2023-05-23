@@ -51,7 +51,7 @@ router.post('/login', async(req, res) => {
             error: true,
             message:'Invalid username or password'
         })
-    }
+    } 
 
     let comparePass = await bcrypt.compare(password, user.password)    
     
@@ -61,6 +61,13 @@ router.post('/login', async(req, res) => {
             message:'Invalid username or password'
         })
     }    
+
+    if (user.archived) {
+        return res.status(400).json({
+            error: true,
+            message: "User Archived"
+    })
+    }
 
     let dataReturn = {
         nome: user.name,
