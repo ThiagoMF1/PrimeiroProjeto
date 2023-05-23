@@ -15,3 +15,7 @@ app.use('/admin', authenticateMiddleware , AdminController);
 app.use('/users', usersRouter);
 
 
+app.listen(process.env.PORT,()=> {
+    console.log("process.env.PORT", process.env.PORT)
+    console.log('Ok - Hola');
+})

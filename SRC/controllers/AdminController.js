@@ -2,6 +2,7 @@ const express = require('express');
 const moment = require('moment');
 const router = express.Router();
 const User = require('../models/user');
+const validator = require('validator');
 
 router.get('/users', async (req, res) => {
     const users = await User.find({}, {
@@ -48,7 +49,7 @@ router.get('/users', async (req, res) => {
   router.patch('/users/:id', async (req, res) => {
     try {
       const userId = req.params.id;
-      const updatedData = req.body; 
+      const updatedData = req.body;
   
       const user = await User.findById(userId);
   
@@ -63,6 +64,12 @@ router.get('/users', async (req, res) => {
         user.name = updatedData.name;
       }
       if (updatedData.email) {
+        if (!validator.isEmail(updatedData.email)) {
+          return res.status(400).json({
+            error: true,
+            message: 'Invalid email',
+          });
+        }
         user.email = updatedData.email;
       }
       if (updatedData.password) {
@@ -86,5 +93,5 @@ router.get('/users', async (req, res) => {
       });
     }
   });
-
-module.exports = router;
+  
+  module.exports = router;
