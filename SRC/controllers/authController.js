@@ -21,10 +21,12 @@ router.post('/register', async(req, res) => {
 
     const {email} = req.body;
 
-    if(await userModel.findOne({email})){
+    const scUser = await userModel.countDocuments({email})
+
+    if(scUser != 0){
         return res.status(400).json({
             error: true,
-            message:'el usuario ya tiene registro'
+            message:'The user already has a registration'
         })
     }
 
@@ -42,26 +44,32 @@ router.post('/login', async(req, res) => {
     
     const {email, password} = req.body;
 
-    const user =await userModel.findOne({email}).select('+password');
+    const user =await userModel.findOne({email});
 
     if(!user) {
         return res.status(400).json({
             error: true,
-            message:'usuario no encontrado'
+            message:'Invalid username or password'
         })
     }
 
-    if(!await bcrypt.compare(password, user.password)){
+    let comparePass = await bcrypt.compare(password, user.password)    
+    
+    if(!comparePass){
         return res.status(400).send({
             error:true,
-            message:'contraseña invalida'
+            message:'Invalid username or password'
         })
+    }    
+
+    let dataReturn = {
+        nome: user.name,
+        email: user.email,
+        _id: user._id
     }
 
-    user.password = undefined;
-
     return res.json({
-        user,
+        data: dataReturn,
         token: generateToken(user)
     });
 })
